@@ -248,11 +248,10 @@ Ini bukan masalah yang sulit secara algoritmik, tapi butuh perhatian terhadap ed
 ## Evidence
 
 ### Screenshots
-Seluruh fitur utama dashboard dan observabilitas telah didokumentasikan di folder target artifact:
-- **Main Dashboard**: ![Dashboard Utama](file:///C:/Users/Indra/.gemini/antigravity-ide/brain/ea8ea6d6-e5a9-476a-ab0d-505b4f66083c/initial_dashboard_1782764325223.png)
-- **Observability Hub & Terminal Logs**: ![Observability & Logs](file:///C:/Users/Indra/.gemini/antigravity-ide/brain/ea8ea6d6-e5a9-476a-ab0d-505b4f66083c/bottom_dashboard_logs_1782764399547.png)
+Seluruh fitur utama dashboard dan observabilitas:
+- **Main Dashboard**: ![Dashboard Utama](./screenshots/dashboard.png)
+- **Observability Hub & Terminal Logs**: ![Observability & Logs](./screenshots/observability.png)
 
 ### Video Demo
-*Silakan masukkan tautan video demo singkat (maks 2 menit) Anda di sini (misalnya link Google Drive, YouTube, atau Loom).*
-- **Link Video Demo**: [Tonton Video Demo Uji Teknis] (Tautan Anda)
+- **Link Video Demo**: [Tonton Video Demo Uji Teknis di Google Drive](https://drive.google.com/file/d/1KWNGsF8rRFQaXRTSq2hGRyfB0FxisjZH/view?usp=sharing)
 
