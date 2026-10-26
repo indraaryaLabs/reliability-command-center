@@ -1,4 +1,6 @@
-# Centralized Monitoring Command Center
+# Reliability Command Center
+
+> **English summary:** a service-monitoring dashboard built in 4 days as a technical assignment. An Express + TypeScript backend runs scheduled HTTP and raw TCP health checks against each registered service, stores history in a JSON file, and streams status, logs and Spring-Boot-Actuator-style metrics to a React dashboard over Server-Sent Events. It includes failure simulation (CPU spike, database outage with cascading failures, GC), manual re-checks, and an offline fallback mode when the backend is unreachable. Automated tests for this app live in [reliability-quality-suite](https://github.com/indraaryaLabs/reliability-quality-suite). Full write-up below is in Indonesian.
 
 Dashboard monitoring real-time untuk memantau kesehatan seluruh layanan internal dan eksternal organisasi. Dibangun sebagai bagian dari **Service Reliability Initiative** — target SLA 99.9% uptime di semua platform.
 
@@ -79,8 +81,8 @@ Browser (port 3000)                    Express API (port 3001)
 ### Instalasi
 
 ```bash
-git clone <repo-url>
-cd centralized-monitoring
+git clone https://github.com/indraaryaLabs/reliability-command-center.git
+cd reliability-command-center
 npm install
 ```
 
@@ -190,7 +192,7 @@ Saat backend tidak tersedia:
 ## Struktur Project
 
 ```
-centralized-monitoring/
+reliability-command-center/
 ├── server.ts              # Backend Express API
 ├── src/
 │   ├── App.tsx            # Komponen utama React
