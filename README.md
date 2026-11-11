@@ -4,9 +4,9 @@
 
 Dashboard monitoring real-time untuk memantau kesehatan seluruh layanan internal dan eksternal organisasi. Dibangun sebagai bagian dari **Service Reliability Initiative** — target SLA 99.9% uptime di semua platform.
 
-Frontend: **React 19 + TypeScript + Tailwind CSS v4**  
-Backend: **Express.js + TypeScript**  
-Real-time: **Server-Sent Events (SSE)**  
+Frontend: **React 19 + TypeScript + Tailwind CSS v4** 
+Backend: **Express.js + TypeScript** 
+Real-time: **Server-Sent Events (SSE)** 
 Storage: **JSON file persistence**
 
 ---
@@ -19,7 +19,7 @@ Saya sadar brief menyebutkan Angular sebagai stack yang diutamakan. Tapi saya me
 
 1. **Kecepatan development.** Dengan waktu 4 hari, saya butuh stack yang bisa saya gerakkan paling cepat tanpa mengorbankan kualitas. Saya jauh lebih produktif di React — component composition-nya lebih straightforward untuk dashboard seperti ini yang sifatnya banyak widget independent (kartu service, chart, log terminal, actuator panel) tanpa perlu routing kompleks.
 
-2. **Ekosistem real-time.** React hooks (`useState`, `useEffect`, `useMemo`) membuat state management untuk SSE streaming sangat natural. Data masuk dari EventSource → update state → UI re-render. Di Angular, pattern yang sama butuh lebih banyak boilerplate (Service + Subject + async pipe), yang bukan masalah di project besar tapi jadi overhead di prototype 4 hari.
+2. **Ekosistem real-time.** React hooks (`useState`, `useEffect`, `useMemo`) membuat state management untuk SSE streaming sangat natural. Data masuk dari EventSource -> update state -> UI re-render. Di Angular, pattern yang sama butuh lebih banyak boilerplate (Service + Subject + async pipe), yang bukan masalah di project besar tapi jadi overhead di prototype 4 hari.
 
 3. **Tailwind CSS tetap jadi pilihan styling.** Sesuai dengan preferensi di brief, saya pakai Tailwind v4 untuk seluruh styling. Tidak ada custom CSS yang signifikan — semua utility-first.
 
@@ -31,7 +31,7 @@ Saya sadar brief menyebutkan Angular sebagai stack yang diutamakan. Tapi saya me
 
 2. **TCP socket ping bawaan.** Node.js punya modul `net` built-in untuk raw TCP connection. Ini penting karena tidak semua service yang dimonitor itu HTTP — database (PostgreSQL) dan cache (Redis) perlu di-ping via TCP socket langsung ke port-nya. Di Spring Boot, saya perlu library tambahan atau menulis custom health indicator.
 
-3. **SSE tanpa overhead.** Express bisa streaming SSE response dengan `res.write()` langsung — tidak perlu WebFlux atau SseEmitter setup. Untuk dashboard yang cuma perlu push satu arah (server → client), SSE lebih tepat daripada WebSocket.
+3. **SSE tanpa overhead.** Express bisa streaming SSE response dengan `res.write()` langsung — tidak perlu WebFlux atau SseEmitter setup. Untuk dashboard yang cuma perlu push satu arah (server -> client), SSE lebih tepat daripada WebSocket.
 
 4. **Startup instan.** `tsx server.ts` langsung jalan tanpa compile step. Bandingkan dengan Spring Boot yang butuh Maven/Gradle build + JVM warm-up. Untuk development cycle yang cepat, ini sangat membantu.
 
@@ -49,22 +49,22 @@ Kalau project ini masuk production, tentu saja JSON file perlu diganti dengan da
 ### Arsitektur Keseluruhan
 
 ```
-Browser (port 3000)                    Express API (port 3001)
-┌────────────────────┐                ┌──────────────────────────┐
-│  React Dashboard   │◄──── SSE ─────│  /api/stream             │
-│                    │                │                          │
-│  - Service Cards   │── REST API ──►│  /api/services (CRUD)    │
-│  - Actuator Panel  │               │  /api/actuator/health    │
-│  - Log Terminal    │               │  /api/actuator/metrics   │
-│  - Latency Charts  │               │  /api/actuator/simulate  │
-│                    │                │                          │
-│  Fallback:         │                │  Background Workers:     │
-│  In-memory sim     │                │  - Per-service scheduler │
-│  jika backend mati │                │  - HTTP fetch ping       │
-└────────────────────┘                │  - TCP socket ping       │
-                                      │                          │
-                                      │  Storage: db.json        │
-                                      └──────────────────────────┘
+Browser (port 3000) Express API (port 3001)
+┌────────────────────┐ ┌──────────────────────────┐
+│ React Dashboard │◄──── SSE ─────│ /api/stream │
+│ │ │ │
+│ - Service Cards │── REST API ──►│ /api/services (CRUD) │
+│ - Actuator Panel │ │ /api/actuator/health │
+│ - Log Terminal │ │ /api/actuator/metrics │
+│ - Latency Charts │ │ /api/actuator/simulate │
+│ │ │ │
+│ Fallback: │ │ Background Workers: │
+│ In-memory sim │ │ - Per-service scheduler │
+│ jika backend mati │ │ - HTTP fetch ping │
+└────────────────────┘ │ - TCP socket ping │
+ │ │
+ │ Storage: db.json │
+ └──────────────────────────┘
 ```
 
 **Dual-mode operation:** Frontend otomatis mendeteksi apakah backend tersedia. Kalau ya, semua data di-stream dari server via SSE. Kalau backend mati, dashboard tetap jalan penuh dengan data simulasi di memori — user tidak lihat blank page atau error.
@@ -193,23 +193,23 @@ Saat backend tidak tersedia:
 
 ```
 reliability-command-center/
-├── server.ts              # Backend Express API
+├── server.ts # Backend Express API
 ├── src/
-│   ├── App.tsx            # Komponen utama React
-│   ├── main.tsx           # Entry point
-│   ├── types.ts           # Type definitions (shared contract)
-│   ├── index.css          # Tailwind styles
-│   ├── components/
-│   │   ├── ActuatorPanel.tsx    # Panel self-observability
-│   │   ├── LogTerminal.tsx      # Terminal log real-time
-│   │   ├── MetricCard.tsx       # Kartu KPI summary
-│   │   ├── ServiceCard.tsx      # Kartu status per service
-│   │   ├── ServiceChart.tsx     # Sparkline latency chart
-│   │   └── ServiceFormModal.tsx # Modal form CRUD service
-│   └── data/
-│       ├── mockServices.ts      # Data seed untuk simulation mode
-│       └── logHelper.ts         # Helper pembuatan log entries
-├── vite.config.ts         # Vite config + API proxy
+│ ├── App.tsx # Komponen utama React
+│ ├── main.tsx # Entry point
+│ ├── types.ts # Type definitions (shared contract)
+│ ├── index.css # Tailwind styles
+│ ├── components/
+│ │ ├── ActuatorPanel.tsx # Panel self-observability
+│ │ ├── LogTerminal.tsx # Terminal log real-time
+│ │ ├── MetricCard.tsx # Kartu KPI summary
+│ │ ├── ServiceCard.tsx # Kartu status per service
+│ │ ├── ServiceChart.tsx # Sparkline latency chart
+│ │ └── ServiceFormModal.tsx # Modal form CRUD service
+│ └── data/
+│ ├── mockServices.ts # Data seed untuk simulation mode
+│ └── logHelper.ts # Helper pembuatan log entries
+├── vite.config.ts # Vite config + API proxy
 ├── package.json
 ├── tsconfig.json
 ├── .env.example
